@@ -1,0 +1,95 @@
+public class TesteCompleto {
+    public static final String NOME = "TesteCompleto";
+    private static int contador = 0;
+    
+    private int valor;
+    private String nome;
+    
+    public TesteCompleto() {
+        this(0, "Anonimo");
+    }
+    
+    public TesteCompleto(int valor, String nome) {
+        this.valor = valor;
+        this.nome = nome;
+        contador++;
+    }
+    
+    public int getValor() {
+        return valor;
+    }
+    
+    public void setValor(int valor) {
+        this.valor = valor;
+    }
+    
+    public String getNome() {
+        return nome;
+    }
+    
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+    
+    public static int getContador() {
+        return contador;
+    }
+    
+    public int calcularFatorial(int n) {
+        if (n <= 1) {
+            return 1;
+        }
+        return n * calcularFatorial(n - 1);
+    }
+    
+    public void processarArray(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] % 2 == 0) {
+                System.out.println(arr[i] + " é par");
+            } else {
+                System.out.println(arr[i] + " é ímpar");
+            }
+        }
+    }
+    
+    public static void main(String[] args) {
+        System.out.println("Iniciando " + NOME);
+        
+        TesteCompleto obj1 = new TesteCompleto();
+        TesteCompleto obj2 = new TesteCompleto(42, "Teste");
+        
+        obj1.setValor(10);
+        obj1.setNome("Objeto1");
+        
+        System.out.println("Obj1: " + obj1.getNome() + " = " + obj1.getValor());
+        System.out.println("Obj2: " + obj2.getNome() + " = " + obj2.getValor());
+        
+        int fatorial = obj1.calcularFatorial(5);
+        System.out.println("Fatorial de 5: " + fatorial);
+        
+        int[] numeros = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        obj1.processarArray(numeros);
+        
+        try {
+            int resultado = 100 / 0;
+        } catch (ArithmeticException e) {
+            System.out.println("Erro capturado: " + e.getMessage());
+        } finally {
+            System.out.println("Finally executado");
+        }
+        
+        for (int i = 0; i < 5; i++) {
+            if (i == 3) continue;
+            System.out.println("Loop: " + i);
+            if (i == 4) break;
+        }
+        
+        int x = 10;
+        int y = 20;
+        int max = (x > y) ? x : y;
+        System.out.println("Max: " + max);
+        
+        System.out.println("Total de objetos: " + TesteCompleto.getContador());
+        System.out.println("Fim do programa!");
+    }
+}

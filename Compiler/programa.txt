@@ -1,0 +1,18 @@
+public class Teste {
+    public static void main(String[] args) {
+        int numero = 42;
+        double pi = 3.14159;
+        String texto = "Olá mundo!";
+        boolean flag = true;
+        
+        if (numero > 10) {
+            System.out.println("Maior que 10");
+        }
+        //Este é um comentário de teste
+
+        /*
+        Este é outro tipo de comentário
+        Também estou a testar
+        */
+    }
+}

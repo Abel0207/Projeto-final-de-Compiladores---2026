@@ -1,0 +1,206 @@
+(* ========== PROGRAMA ========== *)
+<programa> ::= <declaracaoPackage>? <declaracaoImport>* <declaracaoTipo>*
+
+(* ========== IMPORTS E PACKAGES ========== *)
+<declaracaoImport> ::= "import" ("static")? <identificador> ("." <identificador>)* ("." "*")? ";"
+<declaracaoPackage> ::= "package" <identificador> ("." <identificador>)* ";"
+
+(* ========== TIPOS (CLASSES E INTERFACES) ========== *)
+<declaracaoTipo> ::= <modificadorClasse>* ("class" | "interface") <identificador> <parametrosTipo>? 
+                     ("extends" <tipo>)? ("implements" <tipoLista>)? "{" <membroTipo>* "}"
+
+<modificadorClasse> ::= "public" | "protected" | "private" | "abstract" | "static" | "final" | "strictfp"
+
+<parametrosTipo> ::= "<" <parametroTipo> ("," <parametroTipo>)* ">"
+<parametroTipo> ::= <identificador> ("extends" <tipo> ("&" <tipo>)*)?
+
+<tipoLista> ::= <tipo> ("," <tipo>)*
+
+<membroTipo> ::= <membroClasse> | <membroInterface>
+
+<membroClasse> ::= <declaracaoCampo>
+                  | <declaracaoMetodo>
+                  | <construtor>
+                  | <declaracaoTipo>
+                  | <blocoInicializacao>
+
+<membroInterface> ::= <constante>
+                     | <assinaturaMetodo>
+                     | <declaracaoTipo>
+
+<blocoInicializacao> ::= ("static")? <bloco>
+
+<constante> ::= <tipo> <declaradorVariavel> ("," <declaradorVariavel>)* ";"
+<assinaturaMetodo> ::= <tipo> <identificador> "(" <parametros> ")" ("throws" <tipoLista>)? ";"
+
+(* ========== CAMPOS ========== *)
+<declaracaoCampo> ::= <modificadorCampo>* <tipo> <declaradorVariavel> ("," <declaradorVariavel>)* ";"
+<modificadorCampo> ::= "public" | "protected" | "private" | "static" | "final" | "transient" | "volatile"
+
+<declaradorVariavel> ::= <identificador> <dimensoes>? ("=" <varInicializador>)?
+<varInicializador> ::= <expressao> | <arrayInicializador>
+<dimensoes> ::= "[" "]" <dimensoes>?
+
+(* ========== MÉTODOS E CONSTRUTORES ========== *)
+<declaracaoMetodo> ::= <modificadorMetodo>* <tipo> <identificador> "(" <parametros> ")" <dimensoes>? 
+                       ("throws" <tipoLista>)? (";" | <bloco>)
+
+<modificadorMetodo> ::= "public" | "protected" | "private" | "abstract" | "static" | "final" 
+                       | "synchronized" | "native" | "strictfp"
+
+<construtor> ::= <modificadorConstrutor>* <identificador> "(" <parametros> ")" 
+                 ("throws" <tipoLista>)? <bloco>
+
+<modificadorConstrutor> ::= "public" | "protected" | "private"
+
+<parametros> ::= (<parametro> ("," <parametro>)*)?
+<parametro> ::= <modificadorParametro>* <tipo> <identificador> <ellipsis>? <dimensoes>?
+<modificadorParametro> ::= "final"
+<ellipsis> ::= "..."
+
+(* ========== TIPOS ========== *)
+<tipo> ::= <tipoPrimitivo> <dimensoes>?
+          | <tipoReferencia> <dimensoes>?
+          | "void"
+
+<tipoPrimitivo> ::= "boolean" | "char" | "byte" | "short" | "int" | "long" | "float" | "double"
+
+<tipoReferencia> ::= <identificador> <parametrosTipo>? ("." <identificador> <parametrosTipo>?)*
+
+(* ========== BLOCO E INSTRUÇÕES ========== *)
+<bloco> ::= "{" <instrucao>* "}"
+
+<instrucao> ::= <instrucaoDeclaracaoVariavel>
+              | <instrucaoIf>
+              | <instrucaoWhile>
+              | <instrucaoDoWhile>
+              | <instrucaoFor>
+              | <instrucaoForEach>
+              | <instrucaoSwitch>
+              | <instrucaoBreak>
+              | <instrucaoContinue>
+              | <instrucaoReturn>
+              | <instrucaoThrow>
+              | <instrucaoTry>
+              | <instrucaoExpressao>
+              | <instrucaoBloco>
+              | <instrucaoVazia>
+              | <instrucaoAssert>
+              | <instrucaoSynchronized>
+
+<instrucaoDeclaracaoVariavel> ::= <tipo> <declaradorVariavel> ("," <declaradorVariavel>)* ";"
+
+<instrucaoIf> ::= "if" "(" <expressao> ")" <instrucaoNoElse> ("else" <instrucao>)?
+
+<instrucaoNoElse> ::= <instrucaoDeclaracaoVariavel>
+                     | <instrucaoWhile>
+                     | <instrucaoDoWhile>
+                     | <instrucaoFor>
+                     | <instrucaoForEach>
+                     | <instrucaoSwitch>
+                     | <instrucaoBreak>
+                     | <instrucaoContinue>
+                     | <instrucaoReturn>
+                     | <instrucaoThrow>
+                     | <instrucaoTry>
+                     | <instrucaoExpressao>
+                     | <instrucaoBloco>
+                     | <instrucaoVazia>
+                     | <instrucaoAssert>
+                     | <instrucaoSynchronized>
+                     | <instrucaoIfNoElse>
+
+<instrucaoIfNoElse> ::= "if" "(" <expressao> ")" <instrucaoNoElse>
+
+<instrucaoWhile> ::= "while" "(" <expressao> ")" <instrucao>
+
+<instrucaoDoWhile> ::= "do" <instrucao> "while" "(" <expressao> ")" ";"
+
+<instrucaoFor> ::= "for" "(" <declaracaoFor>? ";" <expressao>? ";" <expressaoLista>? ")" <instrucao>
+
+<declaracaoFor> ::= <tipo> <declaradorVariavel> ("," <declaradorVariavel>)* | <expressaoLista>
+
+<expressaoLista> ::= <expressao> ("," <expressao>)*
+
+(* Distinguido do for clássico por lookahead: "Tipo identificador :" *)
+<instrucaoForEach> ::= "for" "(" <tipo> <identificador> ":" <expressao> ")" <instrucao>
+
+<instrucaoSwitch> ::= "switch" "(" <expressao> ")" "{" <switchGroup>* "}"
+
+<switchGroup> ::= <switchLabel> <instrucao>*
+<switchLabel> ::= "case" <expressaoConstante> ":" | "default" ":"
+<expressaoConstante> ::= <literalInteiro> | <literalString> | "true" | "false" | "null"
+
+<instrucaoBreak> ::= "break" (<identificador>)? ";"
+<instrucaoContinue> ::= "continue" (<identificador>)? ";"
+<instrucaoReturn> ::= "return" <expressao>? ";"
+<instrucaoThrow> ::= "throw" <expressao> ";"
+
+<instrucaoTry> ::= "try" <bloco> (<catchClause>+ | "finally" <bloco>)
+<catchClause> ::= "catch" "(" <tipo> <identificador> ")" <bloco>
+
+<instrucaoExpressao> ::= <expressao> ";"
+<instrucaoBloco> ::= <bloco>
+<instrucaoVazia> ::= ";"
+<instrucaoAssert> ::= "assert" <expressao> (":" <expressao>)? ";"
+<instrucaoSynchronized> ::= "synchronized" "(" <expressao> ")" <bloco>
+
+(* ========== EXPRESSÕES (PRATT PARSER - NÃO AMBÍGUAS) ========== *)
+<expressao> ::= <expressaoAtribuicao>
+
+<expressaoAtribuicao> ::= <expressaoCondicional> (("=" | "+=" | "-=" | "*=" | "/=" | "%=" 
+                          | "&=" | "|=" | "^=" | "<<=" | ">>=" | ">>>=") <expressaoAtribuicao>)?
+
+<expressaoCondicional> ::= <expressaoOr> ("?" <expressao> ":" <expressaoCondicional>)?
+
+<expressaoOr> ::= <expressaoAnd> ("||" <expressaoAnd>)*
+<expressaoAnd> ::= <expressaoOrBit> ("&&" <expressaoOrBit>)*
+<expressaoOrBit> ::= <expressaoXor> ("|" <expressaoXor>)*
+<expressaoXor> ::= <expressaoAndBit> ("^" <expressaoAndBit>)*
+<expressaoAndBit> ::= <expressaoIgualdade> ("&" <expressaoIgualdade>)*
+<expressaoIgualdade> ::= <expressaoRelacional> (("==" | "!=") <expressaoRelacional>)*
+
+<expressaoRelacional> ::= <expressaoShift> (("<" | ">" | "<=" | ">=") <expressaoShift>)*
+                         | <expressaoShift> "instanceof" <tipo>
+
+<expressaoShift> ::= <expressaoAditiva> (("<<" | ">>" | ">>>") <expressaoAditiva>)*
+<expressaoAditiva> ::= <expressaoMultiplicativa> (("+" | "-") <expressaoMultiplicativa>)*
+<expressaoMultiplicativa> ::= <expressaoUnaria> (("*" | "/" | "%") <expressaoUnaria>)*
+
+<expressaoUnaria> ::= <expressaoPosFixa>
+                     | ("++" | "--" | "+" | "-" | "~" | "!") <expressaoUnaria>
+                     | "(" <tipo> ")" <expressaoUnaria>  (* CAST EXPRESSION *)
+
+<expressaoPosFixa> ::= <expressaoPrimaria> (("[" <expressao> "]")
+                                           | "." <identificador>
+                                           | "(" <argumentos> ")"
+                                           | "++"
+                                           | "--")*
+
+<expressaoPrimaria> ::= <literal>
+                       | <identificador> <parametrosTipo>?
+                       | "this"
+                       | "super"
+                       | "(" <expressao> ")"
+                       | <newExpressao>
+
+<literal> ::= <literalInteiro> | <literalLong> | <literalFloat> | <literalDouble>
+             | <literalString> | <literalCaractere> | "true" | "false" | "null"
+
+<newExpressao> ::= "new" <tipo> <newSuffix>
+<newSuffix> ::= "(" <argumentos> ")" ("{" <membroTipo>* "}")?
+               | "[" <expressao> "]" <dimensoesArray> (<arrayInicializador> | ("[" <expressao> "]")*)
+
+<dimensoesArray> ::= ("[" <expressao> "]")* <dimensoes>?
+
+<arrayInicializador> ::= "{" (<arrayInicializador> | <expressao>) ("," (<arrayInicializador> | <expressao>))* ","? "}"
+
+<argumentos> ::= (<expressao> ("," <expressao>)*)?
+
+<identificador> ::= IDENTIFICADOR_TOKEN
+<literalInteiro> ::= LITERAL_INTEIRO_TOKEN
+<literalLong> ::= LITERAL_LONG_TOKEN
+<literalFloat> ::= LITERAL_FLOAT_TOKEN
+<literalDouble> ::= LITERAL_DOUBLE_TOKEN
+<literalString> ::= LITERAL_TEXTO_TOKEN
+<literalCaractere> ::= LITERAL_CARACTERE_TOKEN

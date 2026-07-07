@@ -1,0 +1,46 @@
+public class TesteIf {
+    public static void main(String[] args) {
+        int x = 10;
+        int y = 20;
+        
+        // if simples
+        if (x > y) {
+            System.out.println("x maior que y");
+        }
+        
+        // if-else
+        if (x > y) {
+            System.out.println("x maior");
+        } else {
+            System.out.println("y maior ou igual");
+        }
+        
+        // if-else if-else (encadeado)
+        if (x > y) {
+            System.out.println("x maior");
+        } else if (x < y) {
+            System.out.println("y maior");
+        } else {
+            System.out.println("são iguais");
+        }
+        
+        // if sem chaves (instrução única)
+        if (x == 10) System.out.println("x é 10");
+        else System.out.println("x não é 10");
+        
+        // if com operador ternário
+        int max = (x > y) ? x : y;
+        
+        // if aninhado
+        if (x > 0) {
+            if (y > 0) {
+                System.out.println("ambos positivos");
+            }
+        }
+        
+        // if com condições complexas
+        if (x > 0 && y > 0 || x == 10) {
+            System.out.println("condição complexa");
+        }
+    }
+}
