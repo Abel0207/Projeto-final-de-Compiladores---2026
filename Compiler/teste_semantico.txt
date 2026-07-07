@@ -1,0 +1,31 @@
+public class TesteSemantico {
+    private int total = 0;
+    private int total = 5;
+
+    public int soma(int a, int b) {
+        return a + b;
+    }
+
+    public void executar() {
+        int x = 10;
+        String texto = "ola";
+
+        int y = x + naoDeclarada;
+
+        int z = texto;
+
+        int resultado = soma(1, "dois");
+
+        if (x) {
+            System.out.println("nunca deveria compilar");
+        }
+
+        while (texto) {
+            System.out.println("laço inválido");
+        }
+
+        for (int i = 0; texto; i++) {
+            System.out.println(i);
+        }
+    }
+}

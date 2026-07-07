@@ -24,24 +24,37 @@ public class Main {
         String src = Files.readString(Path.of(path));
         
         // Mostra o nome do arquivo
-        System.out.println("█".repeat(80));
-        System.out.println("█ COMPILADOR JAVA - ANÁLISE COMPLETA");
-        System.out.println("█".repeat(80));
-        System.out.println("█ Arquivo: " + Path.of(path).toAbsolutePath());
-        System.out.println("█".repeat(80));
-        
+        System.out.println("=== COMPILADOR JAVA - ANALISE SEMANTICA ===");
+        System.out.println("Arquivo: " + Path.of(path).toAbsolutePath());
+
+        // Abaixo, os blocos comentados (banner decorativo, eco do código-fonte e
+        // listagem token a token) não são exigidos pelo enunciado do exame do
+        // Analisador Semântico: o enunciado pede que o semântico valide a AST
+        // usando os atributos já gravados na Tabela de Símbolos (endereço,
+        // tipo, dimensão, valor, escopo, tamanho em bytes), não que o programa
+        // reimprima o código-fonte ou cada token do Lexer. Ficam apenas
+        // comentados (não removidos) para não perder a funcionalidade caso
+        // seja útil depurar o Lexer isoladamente.
+
+        // System.out.println("█".repeat(80));
+        // System.out.println("█ COMPILADOR JAVA - ANÁLISE COMPLETA");
+        // System.out.println("█".repeat(80));
+        // System.out.println("█ Arquivo: " + Path.of(path).toAbsolutePath());
+        // System.out.println("█".repeat(80));
+
         // CÓDIGO FONTE
-        System.out.println("\n=== CÓDIGO FONTE ===");
-        System.out.println(src);
-        
-        // TOKENS (LEXER)
-        System.out.println("\n=== TOKENS (LEXER) ===");
+        // System.out.println("\n=== CÓDIGO FONTE ===");
+        // System.out.println(src);
+
+        // TOKENS (LEXER) — necessário apenas para depurar o Lexer; o Parser
+        // continua a usar a lista de tokens normalmente, só a impressão foi desativada.
         Lexer lexer = new Lexer(src);
         List<Token> tokens = lexer.scan();
-        for (Token t : tokens) {
-            System.out.println(t);
-        }
-        
+        // System.out.println("\n=== TOKENS (LEXER) ===");
+        // for (Token t : tokens) {
+        //     System.out.println(t);
+        // }
+
         try {
             // Cria o parser com os tokens (a tabela de símbolos é preenchida aqui)
             Parser parser = new Parser(tokens);
