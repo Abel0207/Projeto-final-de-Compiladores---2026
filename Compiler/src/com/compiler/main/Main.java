@@ -20,21 +20,12 @@ public class Main {
     
     public static void main(String[] args) throws Exception {
         // Pega o caminho do arquivo (argumento ou padrão)
-        String path = args.length > 0 ? args[0] : "teste_de_erro.txt";
+        String path = args.length > 0 ? args[0] : "teste_semantico.txt";
         String src = Files.readString(Path.of(path));
         
         // Mostra o nome do arquivo
-        System.out.println("=== COMPILADOR JAVA - ANALISE SEMANTICA ===");
-        System.out.println("Arquivo: " + Path.of(path).toAbsolutePath());
-
-        // Abaixo, os blocos comentados (banner decorativo, eco do código-fonte e
-        // listagem token a token) não são exigidos pelo enunciado do exame do
-        // Analisador Semântico: o enunciado pede que o semântico valide a AST
-        // usando os atributos já gravados na Tabela de Símbolos (endereço,
-        // tipo, dimensão, valor, escopo, tamanho em bytes), não que o programa
-        // reimprima o código-fonte ou cada token do Lexer. Ficam apenas
-        // comentados (não removidos) para não perder a funcionalidade caso
-        // seja útil depurar o Lexer isoladamente.
+        // System.out.println("=== COMPILADOR JAVA - ANALISE SEMANTICA ===");
+        // System.out.println("Arquivo: " + Path.of(path).toAbsolutePath());
 
         // System.out.println("█".repeat(80));
         // System.out.println("█ COMPILADOR JAVA - ANÁLISE COMPLETA");
@@ -59,7 +50,7 @@ public class Main {
             // Cria o parser com os tokens (a tabela de símbolos é preenchida aqui)
             Parser parser = new Parser(tokens);
             Program program = parser.parseProgram();
-            if (parser.hasErrors()) {
+            /*if (parser.hasErrors()) {
                 System.out.println("Parser terminou com erro(s), mas recuperou e continuou a analise.");
                 System.out.println("\n=== ERROS SINTATICOS ===");
                 for (String error : parser.getErrors()) {
@@ -67,14 +58,14 @@ public class Main {
                 }
             } else {
                 System.out.println("Parser executado com sucesso!");
-            }
+            }*/
 
             // Obtém a tabela de símbolos preenchida pelo parser
-            SymbolTable symbolTable = parser.getSymbolTable();
+            //SymbolTable symbolTable = parser.getSymbolTable();
 
             // Mostra a tabela de símbolos completa
-            System.out.println("\n=== TABELA DE SÍMBOLOS ===");
-            symbolTable.printFullTable();
+            // System.out.println("\n=== TABELA DE SÍMBOLOS ===");
+            // symbolTable.printFullTable();
 
             // Análise semântica (3ª fase), executada sobre a AST/tabela de símbolos
             // já produzidas mesmo que o parser tenha reportado erros sintáticos.
@@ -82,7 +73,6 @@ public class Main {
             semanticAnalyzer.analyze();
 
             if (semanticAnalyzer.hasErrors()) {
-                System.out.println("\n=== ERROS SEMANTICOS ===");
                 for (String error : semanticAnalyzer.getErrors()) {
                     System.out.println("- " + error);
                 }
